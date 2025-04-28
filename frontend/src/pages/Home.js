@@ -1,9 +1,11 @@
 // src/pages/Home.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 const Home = () => {
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([
     { id: 'item-1', content: 'Item 1' },
@@ -22,7 +24,32 @@ const Home = () => {
       return;
     }
 
-    setLoading(false); 
+    const email = localStorage.getItem('userEmail');
+
+    if (email) {
+      setUser({ email });
+      setLoading(false);
+    } else {
+      const fetchUser = async () => {
+        try {
+          const response = await axios.get('http://localhost:5009/api/user/me', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          setUser(response.data.user);
+        } catch (error) {
+          console.error('Error fetching user:', error);
+          localStorage.removeItem('authToken');
+          navigate('/login');
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchUser();
+    }
   }, [navigate]);
 
   const handleLogout = () => {
@@ -51,7 +78,7 @@ const Home = () => {
 
         <div className="flex flex-col items-center w-full max-w-md space-y-4">
           <h2 className="text-2xl font-bold text-gray-800">
-            Welcome to the Dashboard
+            Welcome to the dashboard
           </h2>
           <button
             onClick={handleLogout}

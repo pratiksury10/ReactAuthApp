@@ -11,23 +11,25 @@ This is a React app connected to a Node.js backend. It implements user authentic
 To get the project up and running locally, follow the steps below:
 
 -- Clone the repository:
-git clone 
+git clone https://github.com/pratiksury10/ReactAuthApp.git
 
 
 # For the backend:
 
 cd backend
+
 npm install
 
 # For the frontend:
 
 cd frontend
+
 npm install
 
 # Create a .env.local file in the root of the frontend project and add necessary variables, such as:
 
-env
-Copy code
+
 REACT_APP_BACKEND_URL=https://reactauthapp-hga4.onrender.com
-Run both the backend and frontend locally:
+
+Run both the backend and frontend locally 
 
